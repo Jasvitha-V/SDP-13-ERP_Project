@@ -1,14 +1,14 @@
-# Use Java 21
 FROM eclipse-temurin:21-jdk
 
-# Set working directory
 WORKDIR /app
 
-# Copy project files
 COPY . .
 
-# Build the project
+# FIX PERMISSION
+RUN chmod +x mvnw
+
+# Build project
 RUN ./mvnw clean package -DskipTests
 
-# Run the jar
+# Run app
 CMD ["java", "-jar", "target/*.jar"]
