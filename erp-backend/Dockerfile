@@ -1,14 +1,20 @@
-FROM eclipse-temurin:21-jdk
+# -------- BUILD STAGE --------
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
 COPY . .
 
-# FIX PERMISSION
-RUN chmod +x mvnw
+RUN mvn clean package -DskipTests
 
-# Build project
-RUN ./mvnw clean package -DskipTests
 
-# Run app
-CMD ["java", "-jar", "target/edu-erp-backend-0.0.1-SNAPSHOT.jar"]
+# -------- RUN STAGE --------
+FROM eclipse-temurin:21-jdk
+
+WORKDIR /app
+
+# copy ONLY jar from build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# run it
+CMD ["java", "-jar", "app.jar"]
