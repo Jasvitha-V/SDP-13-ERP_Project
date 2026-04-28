@@ -1,7 +1,9 @@
 // src/services/api.js
 // Centralised API client for EduERP backend
 
-const BASE_URL = "https://erp-backend-zvkh.onrender.com/api";
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+export default BASE_URL;
 
 // ─── helpers ────────────────────────────────────────────────
 const getToken = () => localStorage.getItem("token");
